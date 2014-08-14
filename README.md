@@ -5,5 +5,5 @@ NDKSignalTest
 
 - `./run.sh` will compile and load the device
 
-- Watch the adb logcat for crash
+- Watch the adb logcat for crash (on 4.3+ devices ... 4.2 appears immune)
 
