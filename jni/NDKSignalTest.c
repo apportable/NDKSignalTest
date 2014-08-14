@@ -190,6 +190,8 @@ static void *mother_thread(void *ignored) {
     // gather all the other TIDs
     gather_other_threads();
 
+    // --------------------------------------------------------------------------------------------
+    // Problematic section (causes crashes on Android 4.3+) ...
     while (1) {
         usleep(40);
         tkill(logging_thread_id, KILLSIG);
@@ -203,6 +205,7 @@ static void *mother_thread(void *ignored) {
         }
 #endif
     }
+    // --------------------------------------------------------------------------------------------
 
     return NULL;
 }
