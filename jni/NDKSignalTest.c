@@ -10,7 +10,6 @@
 #define KILLSIG SIGUSR2
 #define NWORKERS 4
 #define MAX_THREADS 100
-#define SLEEP_SECS 4
 #define ITIMER_INTERVAL_USECS 100 // gprof use the same amount: http://sourceware.org/binutils/docs/gprof/Implementation.html
 #define LOG_INTERVAL 2 // throttle the logging
 
@@ -54,13 +53,14 @@ static void sig_handler(int sig_nr, siginfo_t *info, void *context) {
     ++unknown_signal_count;
 }
 
-static void hardly_working(int seconds) {
+static void hardly_working() {
     time_t start = time(NULL);
-    while (seconds) {
+    useconds_t usecs = 100;
+    while (usecs) {
         unsigned int size = arc4random_uniform(1024*1024);
         char *allocated = malloc(size);
-        seconds = sleep(seconds);
-        if (seconds) {
+        usecs = usleep(usecs);
+        if (usecs) {
             //LOG("thread %d interrupted", gettid());
         }
         free(allocated);
@@ -76,7 +76,7 @@ static void *worker_thread(void *ignored) {
     pthread_mutex_unlock(&workerLock);
 
     while (1) {
-        hardly_working(SLEEP_SECS);
+        hardly_working();
     }
     return NULL;
 }
@@ -87,7 +87,6 @@ static void *logging_thread(void *ignored) {
     time_t prev = time(NULL);
 
     while (1) {
-        //idle_time(gettid(), SLEEP_SECS);
         sleep(LOG_INTERVAL);
         time_t now = time(NULL);
         if (now-prev > LOG_INTERVAL) {
@@ -185,7 +184,7 @@ static void *mother_thread(void *ignored) {
         }
     }
     // wait for stuff-n-things to settle a bit more ...
-    sleep(SLEEP_SECS);
+    sleep(4);
 
     // gather all the other TIDs
     gather_other_threads();
