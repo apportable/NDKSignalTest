@@ -8,7 +8,7 @@
 #define LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "NDKSignalTest", fmt, __VA_ARGS__)
 
 #define KILLSIG SIGUSR2
-#define NWORKERS 4
+#define NWORKERS 6
 #define MAX_THREADS 100
 #define ITIMER_INTERVAL_USECS 100 // gprof use the same amount: http://sourceware.org/binutils/docs/gprof/Implementation.html
 #define LOG_INTERVAL 2 // throttle the logging
@@ -99,7 +99,7 @@ static void *logging_thread(void *ignored) {
                 LOG("unknown signal count:%d", unknown_signal_count);
             }
             if (logging_signal_count) {
-                LOG("logging thrad %d signal count:%d", logging_thread_id, logging_signal_count);
+                LOG("logging thred %d signal count:%d", logging_thread_id, logging_signal_count);
             }
             unsigned int t;
             for (t = 0; t < NWORKERS; ++t) {
@@ -197,19 +197,35 @@ static void *mother_thread(void *ignored) {
         for (t = 0; t < NWORKERS; ++t) {
             tkill(worker_thread_ids[t], KILLSIG);
         }
-#if 1
-        /* Kill other (Java) threads */
+        /* Kill other (potentially-Java) threads */
         for (t = 0; t < otherThreadCount; ++t) {
             tkill(other_thread_ids[t], KILLSIG);
         }
-#endif
     }
     // --------------------------------------------------------------------------------------------
 
     return NULL;
 }
 
+#define LAUNCH_WITHOUT_JAVA 1
+#ifdef LAUNCH_WITHOUT_JAVA
+
+// This is preferred way to run this test since it eliminates Java/Dalvik as the potential failure case
+int main(int argc, char **argv) {
+    pthread_t thread;
+    pthread_create(&thread, NULL, mother_thread, NULL);
+
+    while (1) {
+        sleep(1);
+        printf("I have not crashed yet, w00t!\n");
+    }
+}
+
+#else
+
 void Java_com_apportable_ndksignaltest_NDKSignalTest_beginTest(JNIEnv *env, jclass clazz) {
     pthread_t thread;
     pthread_create(&thread, NULL, mother_thread, NULL);
 }
+
+#endif

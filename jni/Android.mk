@@ -5,6 +5,11 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := NDKSignalTest
 LOCAL_SRC_FILES := NDKSignalTest.c
 
-LOCAL_LDLIBS := -llog
+LOCAL_LDLIBS := -llog -landroid
 
-include $(BUILD_SHARED_LIBRARY)
+# Build a shared library and let Java/Dalvik drive
+#include $(BUILD_SHARED_LIBRARY)
+
+# --OR-- Build an executable so native can drive this show
+include $(BUILD_EXECUTABLE)
+
