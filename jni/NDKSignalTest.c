@@ -207,8 +207,8 @@ static void *mother_thread(void *ignored) {
     return NULL;
 }
 
-#define LAUNCH_WITHOUT_JAVA 1
-#ifdef LAUNCH_WITHOUT_JAVA
+#define LAUNCH_WITHOUT_JAVA 0
+#if LAUNCH_WITHOUT_JAVA
 
 // This is preferred way to run this test since it eliminates Java/Dalvik as the potential failure case
 int main(int argc, char **argv) {
@@ -217,7 +217,7 @@ int main(int argc, char **argv) {
 
     while (1) {
         sleep(1);
-        printf("I have not crashed yet, w00t!\n");
+        //printf("I have not crashed yet, w00t!\n");
     }
 }
 
