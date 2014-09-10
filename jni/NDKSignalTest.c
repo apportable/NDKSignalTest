@@ -12,6 +12,7 @@
 #define MAX_THREADS 100
 #define ITIMER_INTERVAL_USECS 100 // gprof use the same amount: http://sourceware.org/binutils/docs/gprof/Implementation.html
 #define LOG_INTERVAL 2 // throttle the logging
+#define USE_SUPER_SIMPLE_HANDLER_THAT_DOES_NOTHING_BUT_APP_STILL_CRASHES 0
 
 static pthread_mutex_t workerLock = PTHREAD_MUTEX_INITIALIZER;
 static unsigned int otherThreadCount = 0;
@@ -28,6 +29,10 @@ static volatile sig_atomic_t other_signal_count[MAX_THREADS];
 static volatile sig_atomic_t unknown_signal_count = 0;
 
 static void sig_handler(int sig_nr, siginfo_t *info, void *context) {
+#if USE_SUPER_SIMPLE_HANDLER_THAT_DOES_NOTHING_BUT_APP_STILL_CRASHES
+    volatile sig_atomic_t foo = 0;
+    ++foo;
+#else
     pid_t me = gettid();
     if (me == mother_thread_id) {
         ++mother_signal_count;
@@ -51,6 +56,7 @@ static void sig_handler(int sig_nr, siginfo_t *info, void *context) {
         }
     }
     ++unknown_signal_count;
+#endif
 }
 
 static void hardly_working() {

@@ -1,7 +1,7 @@
 NDKSignalTest
 =============
 
-- Shows a crash on Android 4.3+ devices (Nexus 7 devices tested).
+- Shows a crash on Android 4.2+ devices (mostly Nexus devices tested)
 
 - This may be interesting to Android developers working on libc (bionic) and/or Linux kernel
 
@@ -16,7 +16,7 @@ Build a reduced testcase as a standard Android app
 Watch logcat
 ------------
 
-- Watch the adb logcat for crash (on 4.3+ devices ... 4.2 appears immune)
+- Watch the adb logcat for crash (see list of devices known to crash below)
 
 To build a super-reduced ADB commandline testcase
 -------------------------------------------------
@@ -37,3 +37,26 @@ YMMV...
 
 - Execute over adb : `adb shell /data/local/tmp/NDKSignalTest`
 
+Crashing Devices
+----------------
+
+Serial number is reported by `adb devices`
+
+- Nexus 5         running 4.4.4 ... Kernel 3.4.0-gd59db4e      android-build@vpbs1.mtv.corp.google.com #1 Mon Mar 17 15:16:36 PDT 2014  (serial # 05efecfcf0db3246)
+
+- Nexus 4         running 4.2.2 ... Kernel 3.4.0-perf-g7ce11cd android-build@vpbs1.mtv.corp.google.com #1 Tue Jan 29 11:41:33 PST 2013  (serial # 04c79daee4d3951f)
+
+Apparently Immune Devices
+-------------------------
+
+- Nexus 7         running 4.2.2 ... Kernel 3.1.10-g05b777c     android-build@vpbs1.mtv.corp.google.com #1 Thu Nov 29 10:35:37 PST 2012  (serial # 015d1244cd5bf40c)
+
+- Nexus 7         running 4.3   ... Kernel 3.1.10-g1e8b3d8     android-build@vpbs1.mtv.corp.google.com #1 Tue Jun 11 23:51:41 PDT 2013  (serial # 015d2109ab1ffc03)
+
+- Nexus 7         running 4.4.4 ... Kernel 3.1.10-g1e42d16     android-build@vpbs1.mtv.corp.google.com #1 Thu Mar 13 11:33:27 PDT 2014  (serial # 015d2d42235c0808)
+
+- Samsung GT4 10" running 4.4.2 ... Kernel 3.4.0-1105486 dpi@SWDD5006 #1                                  Sat Mar 29 11:06:39 KST 2014  (serial # 51d5881002d21796)
+
+- Nexus 10        running 4.2.2 ... Kernel 3.4.5-gaf9c307      android-build@vpbs1.mtv.corp.google.com #1 Tue Jan  8 17:22:07 PST 2013  (serial # R32CA04LS1D)
+
+- Nexus 10        running 4.4.2 ... Kernel 3.4.39-g5b5c8df     android-build@vpbs1.mtv.corp.google.com #1 Wed Nov 20 15:12:05 PST 2013  (serial # R32CB017DRT)
