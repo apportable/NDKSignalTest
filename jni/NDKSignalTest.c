@@ -7,7 +7,7 @@
 
 #define LOG(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, "NDKSignalTest", fmt, __VA_ARGS__)
 
-#define KILLSIG SIGUSR2
+#define SIG_TO_TEST SIGUSR2
 #define NWORKERS 6
 #define MAX_THREADS 100
 #define ITIMER_INTERVAL_USECS 100 // gprof use the same amount: http://sourceware.org/binutils/docs/gprof/Implementation.html
@@ -172,7 +172,7 @@ static void *mother_thread(void *ignored) {
     sa.sa_flags = SA_RESTART | SA_SIGINFO;
     sigemptyset(&sa.sa_mask);
     struct sigaction oldsa;
-    sigaction(KILLSIG, &sa, &oldsa);
+    sigaction(SIG_TO_TEST, &sa, &oldsa);
     if (oldsa.sa_sigaction) {
         LOG("Interesting ... old sigaction : %p", oldsa.sa_sigaction); // presumably should be 0x0
     }
@@ -199,13 +199,13 @@ static void *mother_thread(void *ignored) {
     // Problematic section (causes crashes on Android 4.3+) ...
     while (1) {
         usleep(40);
-        tkill(logging_thread_id, KILLSIG);
+        tkill(logging_thread_id, SIG_TO_TEST);
         for (t = 0; t < NWORKERS; ++t) {
-            tkill(worker_thread_ids[t], KILLSIG);
+            tkill(worker_thread_ids[t], SIG_TO_TEST);
         }
         /* Kill other (potentially-Java) threads */
         for (t = 0; t < otherThreadCount; ++t) {
-            tkill(other_thread_ids[t], KILLSIG);
+            tkill(other_thread_ids[t], SIG_TO_TEST);
         }
     }
     // --------------------------------------------------------------------------------------------
