@@ -44,6 +44,8 @@ Serial number is reported by `adb devices`
 
 - Nexus 5         running 4.4.4 ... Kernel 3.4.0-gd59db4e      android-build@vpbs1.mtv.corp.google.com #1 Mon Mar 17 15:16:36 PDT 2014  (serial # 05efecfcf0db3246)
 
+- Nexus 5         running 5.0   ... Kernel 3.4.0-g323bbd9      android-build@vpbs1.mtv.corp.google.com (gcc version 4.7 (GCC) ) #1 SMP PREEMPT Thu Oct 9 05:57:15 UTC 2014 (serial #03758e42437e9654)
+
 - Nexus 4         running 4.2.2 ... Kernel 3.4.0-perf-g7ce11cd android-build@vpbs1.mtv.corp.google.com #1 Tue Jan 29 11:41:33 PST 2013  (serial # 04c79daee4d3951f)
 
 Apparently Immune Devices
